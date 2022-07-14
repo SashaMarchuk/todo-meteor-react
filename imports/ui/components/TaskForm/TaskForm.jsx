@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import "./TaskForm.css";
 import { Tasks } from "../../../api/Tasks/tasks";
 
-const TaskForm = () => {
+const TaskForm = ({ user }) => {
   const [text, setText] = useState("");
 
   const handleSubmit = (e) => {
@@ -14,6 +14,7 @@ const TaskForm = () => {
     Tasks.insert({
       text: text.trim(),
       createdAt: new Date(),
+      userId: user._id,
     });
 
     setText("");
