@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Task from "./components/Task/Task.jsx";
 import TaskForm from "./components/TaskForm/TaskForm.jsx";
 
@@ -11,8 +11,11 @@ const toggleChecked = ({ _id, isChecked }) =>
 const deleteTask = ({ _id }) => Tasks.remove(_id);
 
 export const App = () => {
+  const [hideCompleted, setHideCompleted] = useState(false);
+
   const options = { sort: { createdAt: -1 } };
-  const tasks = useTracker(() => Tasks.find({}, options).fetch());
+  const query = { ...(hideCompleted && { isChecked: { $ne: true } }) };
+  const tasks = useTracker(() => Tasks.find(query, options).fetch());
 
   return (
     <div className="app">
@@ -26,6 +29,11 @@ export const App = () => {
 
       <div className="main">
         <TaskForm />
+        <div className="filter">
+          <button onClick={() => setHideCompleted(!hideCompleted)}>
+            {hideCompleted ? "Show All" : "Hide Completed"}
+          </button>
+        </div>
 
         <ul className="tasks">
           {tasks.map((task) => (
