@@ -6,7 +6,9 @@
     "run": "meteor run",
     "test": "meteor test --once --driver-package meteortesting:mocha",
     "test-app": "TEST_WATCH=1 meteor test --full-app --driver-package meteortesting:mocha",
-    "visualize": "meteor --production --extra-packages bundle-visualizer"
+    "visualize": "meteor --production --extra-packages bundle-visualizer",
+    "create": "npx generate-react-cli component ",
+    "create:p": "npx generate-react-cli component --type=page"
   },
   "dependencies": {
     "@babel/runtime": "^7.17.9",
