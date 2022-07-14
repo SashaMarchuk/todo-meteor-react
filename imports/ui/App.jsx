@@ -17,23 +17,29 @@ export const App = () => {
   const query = { ...(hideCompleted && { isChecked: { $ne: true } }) };
   const tasks = useTracker(() => Tasks.find(query, options).fetch());
 
+  const pendingTasksCount = useTracker(() => Tasks.find(query).count());
+  const tasksCount = useTracker(() => Tasks.find().count());
+
   return (
     <div className="app">
       <header>
         <div className="app-bar">
           <div className="app-header">
             <h1>📝️ To Do List</h1>
+            {!!pendingTasksCount && pendingTasksCount}
           </div>
         </div>
       </header>
 
       <div className="main">
         <TaskForm />
-        <div className="filter">
-          <button onClick={() => setHideCompleted(!hideCompleted)}>
-            {hideCompleted ? "Show All" : "Hide Completed"}
-          </button>
-        </div>
+        {!!tasksCount && (
+          <div className="filter">
+            <button onClick={() => setHideCompleted(!hideCompleted)}>
+              {hideCompleted ? "Show All" : "Hide Completed"}
+            </button>
+          </div>
+        )}
 
         <ul className="tasks">
           {tasks.map((task) => (
