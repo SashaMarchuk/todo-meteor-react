@@ -19,16 +19,29 @@ export const App = () => {
   const user = useTracker(() => Meteor.user());
 
   const options = { sort: { createdAt: -1 } };
-  const userFilter = { ...(user?._id && { userId: user._id }) };
+  const queryUserFilter = { ...(user?._id && { userId: user._id }) };
   const query = {
     ...(hideCompleted && { isChecked: { $ne: true } }),
-    ...userFilter,
+    ...queryUserFilter,
   };
 
-  const tasks = useTracker(() => Tasks.find(query, options).fetch());
+  const { tasks, pendingTasksCount, tasksCount, isLoading } = useTracker(() => {
+    const noDataAvailable = { tasks: [], pendingTasksCount: 0 };
+    if (!Meteor.user()) {
+      return noDataAvailable;
+    }
+    const handler = Meteor.subscribe("tasks");
 
-  const pendingTasksCount = useTracker(() => Tasks.find(query).count());
-  const tasksCount = useTracker(() => Tasks.find({ ...userFilter }).count());
+    if (!handler.ready()) {
+      return { ...noDataAvailable, isLoading: true };
+    }
+
+    const tasks = Tasks.find(query, options).fetch();
+    const pendingTasksCount = Tasks.find(query).count();
+    const tasksCount = Tasks.find(queryUserFilter).count();
+
+    return { tasks, pendingTasksCount, tasksCount };
+  });
 
   const logout = () => Meteor.logout();
 
@@ -59,6 +72,8 @@ export const App = () => {
                 </button>
               </div>
             )}
+
+            {isLoading && <div className="loading">loading...</div>}
 
             <ul className="tasks">
               {tasks.map((task) => (
