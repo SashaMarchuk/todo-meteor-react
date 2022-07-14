@@ -1,9 +1,9 @@
+import { Meteor } from "meteor/meteor";
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import "./TaskForm.css";
-import { Tasks } from "../../../api/Tasks/tasks";
 
-const TaskForm = ({ user }) => {
+const TaskForm = () => {
   const [text, setText] = useState("");
 
   const handleSubmit = (e) => {
@@ -11,11 +11,7 @@ const TaskForm = ({ user }) => {
 
     if (!text) return;
 
-    Tasks.insert({
-      text: text.trim(),
-      createdAt: new Date(),
-      userId: user._id,
-    });
+    Meteor.call("tasks.insert", text);
 
     setText("");
   };
