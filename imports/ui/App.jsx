@@ -6,7 +6,8 @@ import { useTracker } from "meteor/react-meteor-data";
 import { Tasks } from "../api/Tasks/tasks.js";
 
 export const App = () => {
-  const tasks = useTracker(() => Tasks.find({}).fetch());
+  const options = { sort: { createdAt: -1 } };
+  const tasks = useTracker(() => Tasks.find({}, options).fetch());
 
   return (
     <div>
