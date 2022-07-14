@@ -1,5 +1,9 @@
 node_modules/
-
+*package-lock.json
+.meteor/.id
+.meteor/local
+*.DS_Store
 .DS_Store
-./DS_Store
-DS_Store
+.vscode/typings/meteor.d.ts
+.idea/
+npm-debug.log
