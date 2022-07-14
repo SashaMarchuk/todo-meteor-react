@@ -1,3 +1,5 @@
+import "../tests/server/tasks/tasks.test";
+
 import assert from "assert";
 
 describe("todo-meteor-react", function () {
