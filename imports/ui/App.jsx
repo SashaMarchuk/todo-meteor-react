@@ -2,11 +2,8 @@ import React from "react";
 import Task from "./components/Task/Task.jsx";
 
 export const App = () => {
-  const tasks = [
-    { _id: 1, text: "First Task" },
-    { _id: 2, text: "Second Task" },
-    { _id: 3, text: "Third Task" },
-  ];
+  const tasks = useTracker(() => TasksCollection.find({}).fetch());
+
   return (
     <div>
       <h1>Welcome to Meteor!</h1>
